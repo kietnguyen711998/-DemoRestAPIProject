@@ -72,6 +72,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 if(!email.isEmpty() && !password.isEmpty()) {
 
                     progress.setVisibility(View.VISIBLE);
+                    Log.d("nnn","click");
                     loginProcess(email,password);
 
                 } else {
@@ -102,11 +103,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         request.setOperation(Constants.LOGIN_OPERATION);
         request.setUser(user);
         Call<ServerResponse> response = requestInterface.operation(request);
+        Log.d("nnn","star");
 
         response.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
-
+                Log.d("nnn","ok");
                 ServerResponse resp = response.body();
                 Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
 
@@ -125,7 +127,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
-
+                Log.d("nnn",t.getMessage());
                 progress.setVisibility(View.INVISIBLE);
                 Log.d(Constants.TAG,"failed");
                 Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();

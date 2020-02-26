@@ -1,7 +1,7 @@
 package com.example.restapiprojectappdemo;
 
 public class Constants {
-    public static final String BASE_URL = "http://10.0.0.31/learn2crack-login-register/";
+    public static final String BASE_URL = "http://10.0.0.31/xxx/";
     public static final String REGISTER_OPERATION = "register";
     public static final String LOGIN_OPERATION = "login";
     public static final String CHANGE_PASSWORD_OPERATION = "chgPass";

@@ -3,7 +3,6 @@ package com.example.restapiprojectappdemo;
 
 import android.os.Bundle;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,8 +26,8 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ResetPasswordFragment extends Fragment {
-    private AppCompatButton btn_reset;
+public class ResetPasswordFragment extends Fragment implements View.OnClickListener{
+    private Button btn_reset;
     private EditText et_email,et_code,et_password;
     private TextView tv_timer;
     private ProgressBar progress;
@@ -41,12 +41,12 @@ public class ResetPasswordFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reset_password,container,false);
         initViews(view);
         return view;
     }
+
 
     private void initViews(View view) {
         btn_reset = view.findViewById(R.id.btn_reset);
@@ -57,44 +57,10 @@ public class ResetPasswordFragment extends Fragment {
         et_password.setVisibility(View.GONE);
         et_code.setVisibility(View.GONE);
         tv_timer.setVisibility(View.GONE);
-        btn_reset.setOnClickListener((View.OnClickListener) this);
+        btn_reset.setOnClickListener(this);
         progress = view.findViewById(R.id.progress);
     }
-    public void onClick(View v) {
-        switch (v.getId()){
-
-            case R.id.btn_reset:
-
-                if(!isResetInitiated) {
-
-
-                    email = et_email.getText().toString();
-                    if (!email.isEmpty()) {
-                        progress.setVisibility(View.VISIBLE);
-                        initiateResetPasswordProcess(email);
-                    } else {
-
-                        Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
-                    }
-                } else {
-
-                    String code = et_code.getText().toString();
-                    String password = et_password.getText().toString();
-
-                    if(!code.isEmpty() && !password.isEmpty()){
-
-                        finishResetPasswordProcess(email,code,password);
-                    } else {
-
-                        Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
-                    }
-
-                }
-
-                break;
-        }
-    }
-
+    ////dat lai pass khi ban dau
     private void initiateResetPasswordProcess(String email){
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -142,12 +108,13 @@ public class ResetPasswordFragment extends Fragment {
 
                 progress.setVisibility(View.INVISIBLE);
                 Log.d(Constants.TAG,"failed");
+                Log.d(Constants.TAG,"xxxxxxxx " +t.getMessage());
                 Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
 
             }
         });
     }
-
+    //dat lai pass sau khi hoan thanh
     private void finishResetPasswordProcess(String email,String code, String password){
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -193,6 +160,7 @@ public class ResetPasswordFragment extends Fragment {
 
                 progress.setVisibility(View.INVISIBLE);
                 Log.d(Constants.TAG,"failed");
+                Log.d(Constants.TAG,"yyyyyyyyyyyy " +t.getMessage());
                 Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
 
             }
@@ -221,4 +189,39 @@ public class ResetPasswordFragment extends Fragment {
         ft.commit();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+
+            case R.id.btn_reset:
+
+                if(!isResetInitiated) {
+
+
+                    email = et_email.getText().toString();
+                    if (!email.isEmpty()) {
+                        progress.setVisibility(View.VISIBLE);
+                        initiateResetPasswordProcess(email);
+                    } else {
+
+                        Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
+                    }
+                } else {
+
+                    String code = et_code.getText().toString();
+                    String password = et_password.getText().toString();
+
+                    if(!code.isEmpty() && !password.isEmpty()){
+
+                        finishResetPasswordProcess(email,code,password);
+                    } else {
+                        //////////////////////////////////
+                        Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
+                    }
+
+                }
+
+                break;
+        }
+    }
 }
